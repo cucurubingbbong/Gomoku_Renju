@@ -25,17 +25,31 @@ public class PlaceManager : MonoBehaviour
     [SerializeField] private LayerMask selectLayerMask;
 
     /// <summary>
-    /// 그리드 매니저 / 추후 인터페이스로 쿼리 형식으로 분리 예정
+    /// 그리드 매니저
     /// </summary>
     [SerializeField] private GridManager gridManager;
+
+    /// <summary>
+    /// 오목 매니저
+    /// </summary>
+    [SerializeField] private GomokuManager gomokuManager;
+
+    /// <summary>
+    /// 유효하지 않은 입력시 반환하는 좌표
+    /// </summary>
+    [SerializeField] Vector3 InvalidPos = new Vector3(-1 , -1 , -1);
 
     private Camera mainCamera;
 
     [Header("게임오브젝트")]
-    // 배치하는 돌들의 루트 오브젝트
-    [SerializeField] private GameObject StoneRoot = null;
+
     /// <summary>
-    /// 0번 : 백 , 1번 : 흑
+    /// 배치하는 돌들의 루트 오브젝트
+    /// </summary>
+    [SerializeField] private GameObject StoneRoot = null;
+
+    /// <summary>
+    /// 0번 : 백, 1번 : 흑
     /// </summary>
     [SerializeField] private GameObject[] stones = null;
 
@@ -46,40 +60,37 @@ public class PlaceManager : MonoBehaviour
 
     private void Update()
     {
-        if (currentPlaceStatus == PlaceStatus.Preview)
-        {
-            UpdatePlaceFlow();
-        }
+        if (currentPlaceStatus == PlaceStatus.Preview) UpdatePlaceFlow();
     }
 
     private void UpdatePlaceFlow()
     {
-        if (!TrySelectPos(out Vector3 selectPos))
-        {
-            return;
-        }
+        if (!TrySelectPos(out Vector3 selectPos)) return;
 
         Vector2Int gridPos = gridManager.ConvertToGridPos(selectPos);
-        bool canPlace = gridManager.CanPlace(gridPos.x, gridPos.y);
+        bool canPlace = gomokuManager.CanPlace(gridPos.x, gridPos.y);
 
         HandlePlaceInput(canPlace, gridPos);
     }
 
     private void HandlePlaceInput(bool canPlace, Vector2Int pos)
     {
-        if (Input.GetMouseButtonDown(0) && canPlace)
-        {
-            Place(pos);
-        }
-    }
+        if (!Input.GetMouseButtonDown(0) || !canPlace) return;
 
-    private void Place(Vector2Int pos)
-    {
         ChangeState(PlaceStatus.Place);
 
-        gridManager.SetGridStone(pos.x, pos.y, 0);
+        // 최종 배치처리는 오목매니저에서 조건 검사하면서 하기
+        //if (!gomokuManager.TryPlace(pos)) ChangeState(PlaceStatus.Preview);
+    }
 
-        ChangeState(PlaceStatus.Idle);
+    public void PlaceStone(Vector2Int pos, StoneType stoneType)
+    {
+        int stonePrefabIndex = (int)stoneType - 1;
+        Vector3 stonePos = new Vector3(pos.x, 1, pos.y);
+
+        GameObject stoneObject = Instantiate(stones[stonePrefabIndex], stonePos, Quaternion.identity);
+
+        if (StoneRoot != null) stoneObject.transform.SetParent(StoneRoot.transform);
     }
 
     /// <summary>
@@ -95,7 +106,7 @@ public class PlaceManager : MonoBehaviour
             return true;
         }
 
-        selectPos = default;
+        selectPos = InvalidPos;
         return false;
     }
 
@@ -120,10 +131,7 @@ public class PlaceManager : MonoBehaviour
     /// </summary>
     private void ChangeState(PlaceStatus newStatus)
     {
-        if (currentPlaceStatus == newStatus)
-        {
-            return;
-        }
+        if (currentPlaceStatus == newStatus) return;
 
         currentPlaceStatus = newStatus;
     }

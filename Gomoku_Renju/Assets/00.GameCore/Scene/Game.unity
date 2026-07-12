@@ -313,7 +313,7 @@ GameObject:
   - component: {fileID: 820540117}
   - component: {fileID: 820540116}
   - component: {fileID: 820540115}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BoardMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -698,6 +698,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a25923026cdbd9148a5e7e8f18b83f8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlaceManager
+  currentPlaceStatus: 0
+  selectLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  gridManager: {fileID: 81143451}
+  currentStoneIndex: 0
+  StoneRoot: {fileID: 1649135233}
+  stones:
+  - {fileID: 3132648933640406739, guid: 65d77c0d468686b43920275a5f21bcbb, type: 3}
+  - {fileID: 3173230871639913361, guid: a25deab5361443f409a29432851cb4cf, type: 3}
 --- !u!1 &1237385674
 GameObject:
   m_ObjectHideFlags: 0

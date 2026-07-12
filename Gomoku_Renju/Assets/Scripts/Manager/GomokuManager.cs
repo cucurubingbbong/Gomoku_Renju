@@ -2,13 +2,20 @@ using Unity.Mathematics;
 using UnityEngine;
 public class GomokuManager : MonoBehaviour
 {
-    [Header("게임오브젝트")]
-    // 배치하는 돌들의 루트 오브젝트
-    [SerializeField] private GameObject StoneRoot = null;
-    /// <summary>
-    /// 0번 : 백 , 1번 : 흑
-    /// </summary>
-    [SerializeField] private GameObject[] stones = null;
+    [SerializeField] private GridManager gridManager;
+    [SerializeField] private PlaceManager placeManager;
 
-    public int currentStoneColor {get; private set;} = 0;
+    public StoneType CurrentStoneType { get; private set; }
+    public bool IsGamePlaying { get; private set; }
+
+    public void StartGame()
+    {
+
+    }
+    public bool CanPlace(int x, int y)
+    {
+        if (!IsGamePlaying) return false;
+
+        return gridManager.CanPlace(x, y);
+    }
 }
