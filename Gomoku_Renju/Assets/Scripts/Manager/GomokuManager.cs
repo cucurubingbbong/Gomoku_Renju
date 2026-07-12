@@ -27,8 +27,8 @@ public class GomokuManager : MonoBehaviour
 
     public bool TryPlace(Vector2Int pos)
     {
-        if (!CanPlace(pos.x, pos.y))return false;
-        gridManager.SetGridStone(pos.x,pos.y,(int)CurrentStoneType);
+        if (!CanPlace(pos.x, pos.y)) return false;
+        gridManager.SetGridStone(pos.x, pos.y, (int)CurrentStoneType);
         placeManager.PlaceStone(pos, CurrentStoneType);
 
         if (CheckWin(pos, CurrentStoneType))
@@ -48,9 +48,23 @@ public class GomokuManager : MonoBehaviour
         CurrentStoneType = (CurrentStoneType == StoneType.Black) ? StoneType.White : StoneType.Black;
     }
 
-    private bool CheckWin(Vector2Int pos , StoneType currentStoneTYpe)
+    private bool CheckWin(Vector2Int pos, StoneType currentStoneTYpe)
     {
         // 가로세로 , 대각선으로 검사하기
+        Vector2Int[] directions = new Vector2Int[]
+        {
+            new Vector2Int(1, 0),  // 가로
+            new Vector2Int(0, 1),  // 세로
+            new Vector2Int(1, -1), // 우하향 대각선
+            new Vector2Int(1, 1)   // 우상향 대각선
+        };
+        foreach(Vector2Int dir in directions)
+        {
+            int count = 1;
+            // 순방향으로 검사하기 = 카운트 리턴
+            // 역방향으로 검사하기 = 카운트 리턴
+            // 카운트 5개이상이면 승리판정
+        }
         return false;
     }
 
