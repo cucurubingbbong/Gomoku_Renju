@@ -10,14 +10,5 @@ public class GomokuManager : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject[] stones = null;
 
-    void Awake()
-    {
-        
-    }
-
-
-    public void PlaceStone(int x , int y , int stoneIndex)
-    {
-        
-    }
+    public int currentStoneColor {get; private set;} = 0;
 }

@@ -25,18 +25,26 @@ public class GridManager : MonoBehaviour
         {
             for (int j = 0; j < gridSize; j++)
             {
-                grid[i,j] = 0;
+                grid[i, j] = 0;
             }
         }
     }
 
     public void SetGridStone(int x, int y, int stoneIndex)
     {
-        grid[x,y] = stoneIndex;
+        grid[x, y] = stoneIndex;
     }
 
-    public bool CanPlace(int x , int y)
+    public bool CanPlace(int x, int y)
     {
-        return (grid[x , y] != 0);
+        return (grid[x, y] != 0);
+    }
+
+    public Vector2Int ConvertToGridPos(Vector3 worldPos)
+    {
+        int x = Mathf.RoundToInt(worldPos.x);
+        int y = Mathf.RoundToInt(worldPos.z);
+
+        return new Vector2Int(x, y);
     }
 }
