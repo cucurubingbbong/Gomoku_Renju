@@ -15,12 +15,6 @@ public class GridManager : MonoBehaviour
     private int gridSize = 15;
 
     public int GridSize => gridSize;
-
-    private void Awake()
-    {
-        GenerateGrid();
-    }
-
     private void GenerateGrid()
     {
         grid = new int[gridSize, gridSize];

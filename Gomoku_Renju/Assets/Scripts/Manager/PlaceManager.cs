@@ -80,7 +80,7 @@ public class PlaceManager : MonoBehaviour
         ChangeState(PlaceStatus.Place);
 
         // 최종 배치처리는 오목매니저에서 조건 검사하면서 하기
-        //if (!gomokuManager.TryPlace(pos)) ChangeState(PlaceStatus.Preview);
+        if(!gomokuManager.TryPlace(pos)) ChangeState(PlaceStatus.Preview);
     }
 
     public void PlaceStone(Vector2Int pos, StoneType stoneType)
