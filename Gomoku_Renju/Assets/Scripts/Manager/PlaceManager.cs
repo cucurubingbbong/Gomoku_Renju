@@ -39,7 +39,7 @@ public class PlaceManager : MonoBehaviour
     /// </summary>
     [SerializeField] Vector3 InvalidPos = new Vector3(-1 , -1 , -1);
 
-    private Camera mainCamera;
+    [SerializeField] Camera mainCamera;
 
     [Header("게임오브젝트")]
 
@@ -86,7 +86,7 @@ public class PlaceManager : MonoBehaviour
     public void PlaceStone(Vector2Int pos, StoneType stoneType)
     {
         int stonePrefabIndex = (int)stoneType - 1;
-        Vector3 stonePos = new Vector3(pos.x, 1, pos.y);
+        Vector3Int stonePos = new Vector3Int(pos.x, 1, pos.y);
 
         GameObject stoneObject = Instantiate(stones[stonePrefabIndex], stonePos, Quaternion.identity);
 

@@ -19,6 +19,7 @@ public class GomokuManager : MonoBehaviour
         gridManager.ResetGrid();
         CurrentStoneType = (blackFirst) ? StoneType.Black : StoneType.White;
         IsGamePlaying = true;
+        Debug.Log("게임 시작");
         placeManager.StartPlace();
     }
     public bool CanPlace(int x, int y)
@@ -61,14 +62,15 @@ public class GomokuManager : MonoBehaviour
             new Vector2Int(1, -1), // 우하향 대각선
             new Vector2Int(1, 1)   // 우상향 대각선
         };
-        foreach(Vector2Int dir in directions)
+        foreach (Vector2Int dir in directions)
         {
             int count = 1;
             // 정방향 검사
-            CheckLine(dir , pos , currentStoneType);
+            count += CheckLine(dir, pos, currentStoneType);
+            if (count >= 5) return true;
             // 역방향 검사
-            CheckLine(dir*-1 , pos , currentStoneType);
-            if(count >= 5) return true;
+            count += CheckLine(dir * -1, pos, currentStoneType);
+            if (count == 5) return true;
         }
         return false;
     }
@@ -80,16 +82,15 @@ public class GomokuManager : MonoBehaviour
     /// <param name="pos">검사를 시작할 위치</param>
     /// <param name="currentCheckStoneType">현재 체크할 돌 타입</param>
     /// <returns></returns>
-    private int CheckLine(Vector2Int Dir , Vector2Int pos , StoneType currentCheckStoneType)
+    private int CheckLine(Vector2Int Dir, Vector2Int pos, StoneType currentCheckStoneType)
     {
         int count = 0;
-        for(int i = 0; i < 4; i++)
+        Vector2Int checkPos = pos;
+        for (int i = 0; i < 4; i++)
         {
-            Vector2Int checkPos = pos;
             checkPos += Dir;
-            if(gridManager.GetGridStone(checkPos.x , checkPos.y) == CurrentStoneType);
+            if (gridManager.GetGridStone(checkPos.x, checkPos.y) == CurrentStoneType) count++;
             else break;
-            count++;
         }
         return count;
     }
@@ -97,5 +98,6 @@ public class GomokuManager : MonoBehaviour
     private void EndGame()
     {
         Debug.Log("게임종료");
+        IsGamePlaying = false;
     }
 }
