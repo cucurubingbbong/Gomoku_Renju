@@ -9,6 +9,12 @@ public class GridManager : MonoBehaviour
     public StoneType[,] grid = null;
 
     /// <summary>
+    /// 그리드 원점 좌표
+    /// 중앙좌표를 기준으로 그리드 좌표를 계산하기 위해 사용
+    /// </summary>
+    [SerializeField] private Vector2Int originPos = new Vector2Int(0, 0);
+
+    /// <summary>
     /// 그리드 사이즈
     /// </summary>
     [SerializeField]
@@ -51,22 +57,16 @@ public class GridManager : MonoBehaviour
     /// </summary>
     public StoneType GetGridStone(int x, int y)
     {
-        if (!IsInside(x, y))
-        {
-            return (int)StoneType.None;
-        }
+        if (!IsInside(x, y)) return StoneType.None;
 
         return grid[x, y];
     }
 
     public bool CanPlace(int x, int y)
     {
-        if (!IsInside(x, y))
-        {
-            return false;
-        }
+        if (!IsInside(x, y)) return false;
 
-        return grid[x, y] == (int)StoneType.None;
+        return grid[x, y] == StoneType.None;
     }
 
     /// <summary>
@@ -77,11 +77,17 @@ public class GridManager : MonoBehaviour
         return x >= 0 && x < gridSize && y >= 0 && y < gridSize;
     }
 
+    /// <summary>
+    /// 월드 좌표를 그리드 좌표로 변환
+    /// </summary>
+    /// <param name="worldPos">월드 좌표</param>
+    /// <returns>그리드 좌표</returns>
     public Vector2Int ConvertToGridPos(Vector3 worldPos)
     {
-        int x = Mathf.RoundToInt(worldPos.x);
-        int y = Mathf.RoundToInt(worldPos.z);
+        Vector2Int gridPos = new Vector2Int();
+        gridPos.x = Mathf.RoundToInt(worldPos.x - originPos.x);
+        gridPos.y = Mathf.RoundToInt(worldPos.z - originPos.y);
 
-        return new Vector2Int(x, y);
+        return gridPos;
     }
 }
