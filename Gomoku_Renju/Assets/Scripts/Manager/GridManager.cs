@@ -6,7 +6,7 @@ public class GridManager : MonoBehaviour
     /// 2D 그리드 
     /// 0 : 비어있음 , 1 : 백돌 , 2 : 흑돌
     /// </summary>
-    public int[,] grid = null;
+    public StoneType[,] grid = null;
 
     /// <summary>
     /// 그리드 사이즈
@@ -17,13 +17,13 @@ public class GridManager : MonoBehaviour
     public int GridSize => gridSize;
     private void GenerateGrid()
     {
-        grid = new int[gridSize, gridSize];
+        grid = new StoneType[gridSize, gridSize];
 
         for (int i = 0; i < gridSize; i++)
         {
             for (int j = 0; j < gridSize; j++)
             {
-                grid[i, j] = (int)StoneType.None;
+                grid[i, j] = StoneType.None;
             }
         }
     }
@@ -43,13 +43,13 @@ public class GridManager : MonoBehaviour
             return;
         }
 
-        grid[x, y] = stoneIndex;
+        grid[x, y] = (StoneType)stoneIndex;
     }
 
     /// <summary>
     /// 해당 위치의 돌 반환
     /// </summary>
-    public int GetGridStone(int x, int y)
+    public StoneType GetGridStone(int x, int y)
     {
         if (!IsInside(x, y))
         {

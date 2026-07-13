@@ -10,6 +10,10 @@ public class GomokuManager : MonoBehaviour
 
     [SerializeField] private bool blackFirst = true;
 
+    public void Start()
+    {
+        StartGame();
+    }
     public void StartGame()
     {
         gridManager.ResetGrid();
@@ -39,7 +43,6 @@ public class GomokuManager : MonoBehaviour
 
         ChangeTurn();
         placeManager.StartPlace();
-
         return true;
     }
 
@@ -48,7 +51,7 @@ public class GomokuManager : MonoBehaviour
         CurrentStoneType = (CurrentStoneType == StoneType.Black) ? StoneType.White : StoneType.Black;
     }
 
-    private bool CheckWin(Vector2Int pos, StoneType currentStoneTYpe)
+    private bool CheckWin(Vector2Int pos, StoneType currentStoneType)
     {
         // 가로세로 , 대각선으로 검사하기
         Vector2Int[] directions = new Vector2Int[]
@@ -61,11 +64,34 @@ public class GomokuManager : MonoBehaviour
         foreach(Vector2Int dir in directions)
         {
             int count = 1;
-            // 순방향으로 검사하기 = 카운트 리턴
-            // 역방향으로 검사하기 = 카운트 리턴
-            // 카운트 5개이상이면 승리판정
+            // 정방향 검사
+            CheckLine(dir , pos , currentStoneType);
+            // 역방향 검사
+            CheckLine(dir*-1 , pos , currentStoneType);
+            if(count >= 5) return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// 오목 승리판정을 위한 라인 체크
+    /// </summary>
+    /// <param name="Dir">방향</param>
+    /// <param name="pos">검사를 시작할 위치</param>
+    /// <param name="currentCheckStoneType">현재 체크할 돌 타입</param>
+    /// <returns></returns>
+    private int CheckLine(Vector2Int Dir , Vector2Int pos , StoneType currentCheckStoneType)
+    {
+        int count = 0;
+        for(int i = 0; i < 4; i++)
+        {
+            Vector2Int checkPos = pos;
+            checkPos += Dir;
+            if(gridManager.GetGridStone(checkPos.x , checkPos.y) == CurrentStoneType);
+            else break;
+            count++;
+        }
+        return count;
     }
 
     private void EndGame()
