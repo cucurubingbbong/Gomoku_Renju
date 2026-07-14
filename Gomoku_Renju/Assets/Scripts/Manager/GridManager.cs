@@ -42,27 +42,27 @@ public class GridManager : MonoBehaviour
         GenerateGrid();
     }
 
-    public void SetGridStone(int x, int y, int stoneIndex)
+    public void SetGridStone(Vector2Int pos, StoneType stoneType)
     {
-        if (!IsInside(x, y))
+        if (!IsInside(pos.x, pos.y))
         {
             return;
         }
 
-        grid[x, y] = (StoneType)stoneIndex;
+        grid[pos.x, pos.y] = stoneType;
     }
 
     /// <summary>
     /// 해당 위치의 돌 반환
     /// </summary>
-    public StoneType GetGridStone(int x, int y)
+    public StoneType GetGridStone(Vector2Int pos)
     {
-        if (!IsInside(x, y)) return StoneType.None;
+        if (!IsInside(pos.x, pos.y)) return StoneType.None;
 
-        return grid[x, y];
+        return grid[pos.x, pos.y];
     }
 
-    public bool CanPlace(int x, int y)
+    public bool CanPlace(Vector2Int pos)
     {
         if (!IsInside(x, y)) return false;
 
