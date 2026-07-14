@@ -30,6 +30,11 @@ public class PlaceManager : MonoBehaviour
     [SerializeField] private GridManager gridManager;
 
     /// <summary>
+    /// 고스트 매니저
+    /// </summary>
+    [SerializeField] private GhostManager ghostManager;
+
+    /// <summary>
     /// 오목 매니저
     /// </summary>
     [SerializeField] private GomokuManager gomokuManager;
@@ -65,11 +70,15 @@ public class PlaceManager : MonoBehaviour
 
     private void UpdatePlaceFlow()
     {
-        if (!TrySelectPos(out Vector3 selectPos)) return;
+        if (!TrySelectPos(out Vector3 selectPos))
+        {
+            ghostManager.UpdateGhost(false , new Vector2Int(-1 , -1));
+            return;
+        }
 
         Vector2Int gridPos = gridManager.ConvertToGridPos(selectPos);
         bool canPlace = gomokuManager.CanPlace(gridPos.x, gridPos.y);
-
+        ghostManager.UpdateGhost(canPlace , gridPos);
         HandlePlaceInput(canPlace, gridPos);
     }
 
@@ -116,6 +125,7 @@ public class PlaceManager : MonoBehaviour
     public void StartPlace()
     {
         ChangeState(PlaceStatus.Preview);
+        ghostManager.GetGhost();
     }
 
     /// <summary>
@@ -124,6 +134,7 @@ public class PlaceManager : MonoBehaviour
     public void CancelPlace()
     {
         ChangeState(PlaceStatus.Idle);
+        ghostManager.ResetGhost();
     }
 
     /// <summary>

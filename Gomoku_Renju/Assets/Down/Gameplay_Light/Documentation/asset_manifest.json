@@ -1,0 +1,93 @@
+{
+  "BlackStoneSet_40_Individual_Gameplay": {
+    "geometry_count": 1,
+    "node_count": 40,
+    "triangles": 528,
+    "file_mb": 2.29,
+    "fbx_included": true
+  },
+  "BlackStone_Gameplay": {
+    "geometry_count": 1,
+    "node_count": 1,
+    "triangles": 528,
+    "file_mb": 2.29,
+    "fbx_included": true
+  },
+  "BowlLid_Gameplay": {
+    "geometry_count": 2,
+    "node_count": 2,
+    "triangles": 5232,
+    "file_mb": 3.56,
+    "fbx_included": true
+  },
+  "CherryTree_LOD0_Gameplay": {
+    "geometry_count": 9,
+    "node_count": 9,
+    "triangles": 50981,
+    "file_mb": 16.42,
+    "fbx_included": true
+  },
+  "CherryTree_LOD1_Gameplay": {
+    "geometry_count": 9,
+    "node_count": 9,
+    "triangles": 21980,
+    "file_mb": 15.29,
+    "fbx_included": true
+  },
+  "CherryTree_LOD2_Gameplay": {
+    "geometry_count": 9,
+    "node_count": 9,
+    "triangles": 7575,
+    "file_mb": 14.63,
+    "fbx_included": true
+  },
+  "JapanesePavilion_LOD0_Gameplay": {
+    "geometry_count": 7,
+    "node_count": 7,
+    "triangles": 12966,
+    "file_mb": 4.54,
+    "fbx_included": true
+  },
+  "JapanesePavilion_LOD1_Gameplay": {
+    "geometry_count": 7,
+    "node_count": 7,
+    "triangles": 8042,
+    "file_mb": 4.38,
+    "fbx_included": true
+  },
+  "JapanesePavilion_LOD2_Gameplay": {
+    "geometry_count": 7,
+    "node_count": 7,
+    "triangles": 5240,
+    "file_mb": 4.28,
+    "fbx_included": true
+  },
+  "PicnicMat_Gameplay": {
+    "geometry_count": 10,
+    "node_count": 10,
+    "triangles": 6598,
+    "file_mb": 14.22,
+    "fbx_included": true
+  },
+  "StoneBowl_Gameplay": {
+    "geometry_count": 1,
+    "node_count": 1,
+    "triangles": 3248,
+    "file_mb": 3.49,
+    "fbx_included": true
+  },
+  "WhiteStoneSet_40_Individual_Gameplay": {
+    "geometry_count": 1,
+    "node_count": 40,
+    "triangles": 528,
+    "file_mb": 2.8,
+    "fbx_included": true
+  },
+  "WhiteStone_Gameplay": {
+    "geometry_count": 1,
+    "node_count": 1,
+    "triangles": 528,
+    "file_mb": 2.79,
+    "fbx_included": true
+  }
+}

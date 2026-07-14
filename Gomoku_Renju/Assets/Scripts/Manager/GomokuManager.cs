@@ -35,6 +35,7 @@ public class GomokuManager : MonoBehaviour
     {
         if (!IsGamePlaying) return false;
         if (!gridManager.CanPlace(x, y)) return false;
+        if(CheckWin(new Vector2Int(x,  y) , CurrentStoneType)) return true;
         if (!CheckRenjuRule(new Vector2Int(x, y), CurrentStoneType)) return false;
 
         return true;
@@ -153,7 +154,6 @@ public class GomokuManager : MonoBehaviour
             if (CheckFour(pos, dir, stoneType)) fourCount++;
             if (fourCount >= 2) return true;
         }
-
         return false;
     }
 
@@ -179,7 +179,6 @@ public class GomokuManager : MonoBehaviour
 
             if (count == 5) return true;
         }
-
         return false;
     }
 
