@@ -12,7 +12,7 @@ public enum PlaceStatus
     Place,
 }
 
-public class PlaceManager : MonoBehaviour
+public class PlaceManager : MonoBehaviour, IPlaceQuery, IPlaceCommand
 {
     /// <summary>
     /// 현재 착수 상태
@@ -25,26 +25,11 @@ public class PlaceManager : MonoBehaviour
     [SerializeField] private LayerMask selectLayerMask;
 
     /// <summary>
-    /// 그리드 매니저
-    /// </summary>
-    [SerializeField] private GridManager gridManager;
-
-    /// <summary>
-    /// 고스트 매니저
-    /// </summary>
-    [SerializeField] private GhostManager ghostManager;
-
-    /// <summary>
-    /// 오목 매니저
-    /// </summary>
-    [SerializeField] private GomokuManager gomokuManager;
-
-    /// <summary>
     /// 유효하지 않은 입력시 반환하는 좌표
     /// </summary>
-    [SerializeField] Vector3 InvalidPos = new Vector3(-1 , -1 , -1);
+    [SerializeField] private Vector3 InvalidPos = new Vector3(-1, -1, -1);
 
-    [SerializeField] Camera mainCamera;
+    [SerializeField] private Camera mainCamera;
 
     [Header("게임오브젝트")]
 
@@ -57,6 +42,21 @@ public class PlaceManager : MonoBehaviour
     /// 0번 : 백, 1번 : 흑
     /// </summary>
     [SerializeField] private GameObject[] stones = null;
+
+    private IGridQuery gridQuery;
+    private IGomokuQuery gomokuQuery;
+    private IGomokuCommand gomokuCommand;
+    private IGhostCommand ghostCommand;
+
+    public PlaceStatus CurrentPlaceStatus => currentPlaceStatus;
+
+    public void Inject(IGridQuery gridQuery, IGomokuQuery gomokuQuery, IGomokuCommand gomokuCommand, IGhostCommand ghostCommand)
+    {
+        this.gridQuery = gridQuery;
+        this.gomokuQuery = gomokuQuery;
+        this.gomokuCommand = gomokuCommand;
+        this.ghostCommand = ghostCommand;
+    }
 
     private void Awake()
     {
@@ -72,13 +72,14 @@ public class PlaceManager : MonoBehaviour
     {
         if (!TrySelectPos(out Vector3 selectPos))
         {
-            ghostManager.UpdateGhost(false , new Vector2Int(-1 , -1));
+            ghostCommand.UpdateGhost(false, new Vector2Int(-1, -1));
             return;
         }
 
-        Vector2Int gridPos = gridManager.ConvertToGridPos(selectPos);
-        bool canPlace = gomokuManager.CanPlace(gridPos.x, gridPos.y);
-        ghostManager.UpdateGhost(canPlace , gridPos);
+        Vector2Int gridPos = gridQuery.ConvertToGridPos(selectPos);
+        bool canPlace = gomokuQuery.CanPlace(gridPos);
+
+        ghostCommand.UpdateGhost(canPlace, gridPos);
         HandlePlaceInput(canPlace, gridPos);
     }
 
@@ -88,8 +89,7 @@ public class PlaceManager : MonoBehaviour
 
         ChangeState(PlaceStatus.Place);
 
-        // 최종 배치처리는 오목매니저에서 조건 검사하면서 하기
-        if(!gomokuManager.TryPlace(pos)) ChangeState(PlaceStatus.Preview);
+        if (!gomokuCommand.TryPlace(pos)) ChangeState(PlaceStatus.Preview);
     }
 
     public void PlaceStone(Vector2Int pos, StoneType stoneType)
@@ -98,8 +98,7 @@ public class PlaceManager : MonoBehaviour
         Vector3Int stonePos = new Vector3Int(pos.x, 1, pos.y);
 
         GameObject stoneObject = Instantiate(stones[stonePrefabIndex], stonePos, Quaternion.identity);
-
-        if (StoneRoot != null) stoneObject.transform.SetParent(StoneRoot.transform);
+        stoneObject.transform.parent = StoneRoot.transform;
     }
 
     /// <summary>
@@ -125,7 +124,7 @@ public class PlaceManager : MonoBehaviour
     public void StartPlace()
     {
         ChangeState(PlaceStatus.Preview);
-        ghostManager.GetGhost();
+        ghostCommand.GetGhost();
     }
 
     /// <summary>
@@ -134,7 +133,7 @@ public class PlaceManager : MonoBehaviour
     public void CancelPlace()
     {
         ChangeState(PlaceStatus.Idle);
-        ghostManager.ResetGhost();
+        ghostCommand.ResetGhost();
     }
 
     /// <summary>
